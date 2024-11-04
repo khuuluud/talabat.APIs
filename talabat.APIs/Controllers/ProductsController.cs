@@ -30,7 +30,8 @@ namespace talabat.APIs.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _productRepo.GetByIdAsync(id);
+            var spec = new ProductWithBrandAndTypeSpec(id);
+            var product = await _productRepo.GetByIdWithSpecAsync(spec);
             return Ok(product);
         }
     }
