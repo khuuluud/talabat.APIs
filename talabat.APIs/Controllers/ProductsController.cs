@@ -36,7 +36,7 @@ namespace talabat.APIs.Controllers
             var spec = new ProductWithBrandAndTypeSpec(id);
             var product = await _productRepo.GetByIdWithSpecAsync(spec);
             var MappedProduct = _mapper.Map<Product, ProductToReturnDto>(product);
-            return Ok(MappedProduct);
+            return Ok(MappedProduct); 
         }
     }
 }
