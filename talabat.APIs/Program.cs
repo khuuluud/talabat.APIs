@@ -1,4 +1,6 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using talabat.APIs.Helpers;
 using Talabat.Core.Entities;
 using Talabat.Core.Repository;
 using Talabat.Repository;
@@ -32,7 +34,8 @@ namespace talabat.APIs
                 });
 
             builder.Services.AddScoped(typeof(iGenericRepository<>), typeof(GenericRepository<>));
-                
+            
+            builder.Services.AddAutoMapper(typeof(MappingProfiles));
                 
                 #endregion
 

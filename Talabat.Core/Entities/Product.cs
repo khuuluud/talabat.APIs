@@ -13,11 +13,8 @@ namespace Talabat.Core.Entities
         public string Description { get; set; }
         public string PictureUrl { get; set; }
         public decimal Price { get; set; }
-
         public int BrandId { get; set; } //foregin key column => ProductBrand
         public ProductBrand Brand { get; set; } //Navigational Property [one]
-
-
         public int CategoryId { get; set; }//foregin key column => ProductBrand
         public ProductCategory Category { get; set; }//Navigational Property [one]
 
