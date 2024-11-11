@@ -17,12 +17,8 @@ namespace Talabat.Repository
         }
 
         #region Without specifications
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            if (typeof(T) == typeof(Product))
-                return (IEnumerable<T>)await _dbcontext.Products.Include(P => P.Brand).Include(P => P.Category).ToListAsync();
-
-            else
 
                 return await _dbcontext.Set<T>().ToListAsync();
 
@@ -32,7 +28,7 @@ namespace Talabat.Repository
 
         #endregion
 
-        public async Task<IEnumerable<T>> GetAllWithSpecAsync(ISpecifications<T> spec)
+        public async Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecifications<T> spec)
         {
             return await ApplySpecification(spec).ToListAsync();
         }
