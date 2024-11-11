@@ -97,6 +97,8 @@ namespace talabat.APIs
                 app.UseSwaggerUI();
             }
 
+            app.UseStatusCodePagesWithRedirects("/errors/{0}");
+
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
