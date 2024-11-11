@@ -9,11 +9,30 @@ namespace Talabat.Core.Specifications
 {
     public class ProductWithBrandAndTypeSpec : BaseSpecifications<Product>
     {
-        public ProductWithBrandAndTypeSpec():base()
+        public ProductWithBrandAndTypeSpec(string Sort) :base()
         {
             Includes.Add(P => P.Category);
             Includes.Add(P => P.Brand);
+
+
+
+            if (!string.IsNullOrEmpty(Sort))
+            {
+                switch (Sort)
+                {
+                    case "PriceAsc":
+                        AddOrderBy(P => P.Price);
+                        break;
+                    case "PriceDesc":
+                        AddOrderByDesc(P => P.Price);
+                        break;
+                    default:
+                        AddOrderBy(P => P.Name);
+                        break;
+                }
+            }
         }
+
 
         public ProductWithBrandAndTypeSpec(int id) : base(P => P.Id == id)
         {
