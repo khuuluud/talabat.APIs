@@ -32,12 +32,13 @@ namespace talabat.APIs.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        [ProducesResponseType(typeof(ProductToReturnDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Product>> GetProductById(int id)
         {
             var spec = new ProductWithBrandAndTypeSpec(id);
             var product = await _productRepo.GetByIdWithSpecAsync(spec);
             if (product is null) return NotFound(new ApiResponse(404));
-             
             var MappedProduct = _mapper.Map<Product, ProductToReturnDto>(product);
             return Ok(MappedProduct); 
         }
