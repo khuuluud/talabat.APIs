@@ -54,6 +54,7 @@ namespace talabat.APIs.Controllers
                 return Ok(types);
         }
 
+
         [HttpGet("Brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetAllBrands()
         {
@@ -62,5 +63,7 @@ namespace talabat.APIs.Controllers
             return Ok(brands);
 
         }
+
+
     }
 }
