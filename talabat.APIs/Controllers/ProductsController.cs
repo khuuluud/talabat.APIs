@@ -32,16 +32,10 @@ namespace talabat.APIs.Controllers
             var spec = new ProductWithBrandAndTypeSpec(Params);
             var Products = await _productRepo.GetAllWithSpecAsync(spec);
             var MapperProducts =  _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(Products);
-            var ReturnedObject = new Pagination<ProductToReturnDto>()
-            {
-                PageIndex = Params.PageIndex,
-                PageSize = Params.PageSize,
-                Data = MapperProducts
-            };
+            var countSpec = new ProductCountAsync(Params);
+            var Count = await _productRepo.GetCountwithSpecAsync(countSpec);
             
-            
-            
-            return Ok(ReturnedObject);
+            return Ok( new Pagination<ProductToReturnDto>(Params.PageIndex , Params.PageSize , MapperProducts , Count));
 
         }
 
