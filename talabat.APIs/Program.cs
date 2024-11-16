@@ -1,6 +1,7 @@
  using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using talabat.APIs.Errors;
 using talabat.APIs.Extenstions;
 using talabat.APIs.Helpers;
@@ -36,6 +37,13 @@ namespace talabat.APIs
                 {
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
                 });
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
+            {
+                var connection = builder.Configuration.GetConnectionString("RedisConnection");
+
+                return ConnectionMultiplexer.Connect(connection);
+            });
 
             builder.Services.AddApplicationServices();
             
