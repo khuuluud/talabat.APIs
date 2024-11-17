@@ -1,4 +1,5 @@
  using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -7,6 +8,7 @@ using talabat.APIs.Extenstions;
 using talabat.APIs.Helpers;
 using talabat.APIs.MiddleWares;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repository;
 using Talabat.Repository;
 using Talabat.Repository.Data;
@@ -54,8 +56,8 @@ namespace talabat.APIs
 
             builder.Services.AddApplicationServices();
 
+            builder.Services.AddIdentityService();
 
-            
             #endregion
 
 
@@ -77,6 +79,8 @@ namespace talabat.APIs
 
                 var IdentityDbContext = Services.GetRequiredService<AppIdentityDbContext>();
                 await IdentityDbContext.Database.MigrateAsync();
+                var UserManager = Services.GetRequiredService<UserManager<AppUser>>();
+                await AppidentityDbContextSeed.SeedUserAsync(UserManager);
                 await StoreContextSeed.SeedAsync(dbContext);
             }
             catch (Exception ex)
