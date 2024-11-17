@@ -12,10 +12,12 @@ namespace talabat.APIs.Controllers
     public class AccountsController : APIBaseController
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signinManager;
 
-        public AccountsController(UserManager<AppUser> userManager)
+        public AccountsController(UserManager<AppUser> userManager , SignInManager<AppUser> SigninManager)
         {
             _userManager = userManager;
+            _signinManager = SigninManager;
         }
 
         [HttpPost("Register")]
@@ -40,5 +42,28 @@ namespace talabat.APIs.Controllers
 
             return Ok(Returneduser);
         }
+
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<UserDto>> login(LoginDto model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user is null) return Unauthorized(new ApiResponse(401));
+
+            var Result = await _signinManager.CheckPasswordSignInAsync(user, model.Password, false);
+
+            if(!Result.Succeeded) return Unauthorized(new ApiResponse(401));
+            return Ok(new UserDto()
+            {
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                Token = "This will be token"
+            });
+        }
+
+
     }
+
+
+
 }
