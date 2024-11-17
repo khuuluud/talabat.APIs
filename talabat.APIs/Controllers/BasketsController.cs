@@ -17,7 +17,7 @@ namespace talabat.APIs.Controllers
             _basketRepository = basketRepository;
         }
 
-        [HttpGet("{BasketId}")]
+        [HttpGet]
         public async Task<ActionResult<CustomerBasket>> GetCustomerBasket(string BasketId)
         {
             var Basket = await _basketRepository.getBasketAsync(BasketId);
