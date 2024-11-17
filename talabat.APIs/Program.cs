@@ -60,7 +60,6 @@ namespace talabat.APIs
 
             #endregion
 
-
              var app = builder.Build();
 
             #region Update-Database

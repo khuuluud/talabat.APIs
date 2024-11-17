@@ -22,6 +22,7 @@ namespace Talabat.Repository.Identity
                     PhoneNumber = "123456789",
 
                 };
+
                 await userManager.CreateAsync(user, "Pa$$w0rd");
             }
             
