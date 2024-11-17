@@ -11,6 +11,8 @@ namespace talabat.APIs.Extenstions
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection Services)
         {
+            Services.AddScoped(typeof( IBasketRepository), typeof( BasketRepository));
+
             Services.AddScoped(typeof(iGenericRepository<>), typeof(GenericRepository<>));
 
             Services.AddAutoMapper(typeof(MappingProfiles));
