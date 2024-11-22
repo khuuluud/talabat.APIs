@@ -13,7 +13,7 @@ namespace Talabat.Core.Entities
 
         public CustomerBasket(string id)
         {
-            id = Id;
+            Id = id;
         }
     }
 }

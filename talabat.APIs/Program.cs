@@ -56,7 +56,9 @@ namespace talabat.APIs
 
             builder.Services.AddApplicationServices();
 
-            builder.Services.AddIdentityService();
+            builder.Services.AddIdentityService(builder.Configuration);
+
+           
 
             #endregion
 
@@ -93,7 +95,7 @@ namespace talabat.APIs
             #endregion
 
             #region Configure kestrel Middlewars
-            // Configure the HTTP request pipeline.
+          
             if (app.Environment.IsDevelopment())
             {
                 app.UseMiddleware<ExceptionMiddleWares>();
@@ -102,10 +104,9 @@ namespace talabat.APIs
 
             app.UseStatusCodePagesWithRedirects("/errors/{0}");
 
-            app.UseStaticFiles();
-
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
