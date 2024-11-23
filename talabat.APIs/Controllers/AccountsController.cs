@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using talabat.APIs.Dtos;
 using talabat.APIs.Errors;
 using Talabat.Core.Entities.Identity;
@@ -16,13 +18,13 @@ namespace talabat.APIs.Controllers
         private readonly SignInManager<AppUser> _signinManager;
         private readonly ITokenService _tokenService;
 
-        public AccountsController(UserManager<AppUser> userManager , SignInManager<AppUser> signinManager , ITokenService tokenService)
+        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signinManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signinManager = signinManager;
             _tokenService = tokenService;
         }
-      
+
 
         [HttpPost("Register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto model)
@@ -35,7 +37,7 @@ namespace talabat.APIs.Controllers
                 PhoneNumber = model.PhoneNumber
             };
 
-         var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded) return BadRequest(new ApiResponse(400));
             var Returneduser = new UserDto()
             {
@@ -56,7 +58,7 @@ namespace talabat.APIs.Controllers
 
             var Result = await _signinManager.CheckPasswordSignInAsync(user, model.Password, false);
 
-            if(!Result.Succeeded) return Unauthorized(new ApiResponse(401));
+            if (!Result.Succeeded) return Unauthorized(new ApiResponse(401));
             return Ok(new UserDto()
             {
                 DisplayName = user.DisplayName,
@@ -65,9 +67,26 @@ namespace talabat.APIs.Controllers
             });
         }
 
+        [Authorize]
+        [HttpGet("GetCurrentUser")]
+        public async Task<ActionResult<UserDto>> GetcurrentUser()
+        {
+
+            var Email = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(Email);
+
+            var returnedObject = new UserDto()
+            {
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                Token = await _tokenService.CreateTokenasync(user, _userManager)
+            };
+
+            return Ok(returnedObject);
+
+
+        }
 
     }
-
-
 
 }
