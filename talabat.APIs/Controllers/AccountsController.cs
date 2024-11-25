@@ -101,6 +101,26 @@ namespace talabat.APIs.Controllers
             var MappedAddress = _mapper.Map<Address, AddressDto>(user.Address);
             return Ok(MappedAddress);
         }
+
+        [Authorize]
+        [HttpPut("Address")]
+        public async Task<ActionResult<AddressDto>> UpdateAddress(AddressDto updatedAddress)
+        {
+            //var email = User.FindFirstValue(ClaimTypes.Email);
+            //var user = await _userManager.FindByEmailAsync(email);
+            //var MappedAddress = _mapper.Map<AddressDto , Address>(updatedAddress);
+            //user.Address = MappedAddress;
+
+            var user = await _userManager.FindUserAddressAsync(User);
+            var MappedAddress = _mapper.Map<AddressDto , Address>(updatedAddress);
+            MappedAddress.Id = user.Address.Id;
+            user.Address = MappedAddress;
+            var Result = await _userManager.UpdateAsync(user);
+            if (!Result.Succeeded) return BadRequest(new ApiResponse(400));
+            return Ok(MappedAddress);
+
+
+        }
     }
 
 }
