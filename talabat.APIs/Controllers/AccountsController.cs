@@ -33,6 +33,12 @@ namespace talabat.APIs.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto model)
         {
+
+            if (CheckEmailExist(model.Email).Result.Value)
+            {
+                return BadRequest(new ApiResponse(400, "Email is already exist"));
+            }
+
             var user = new AppUser()
             {
                 DisplayName = model.DisplayName,
@@ -106,10 +112,6 @@ namespace talabat.APIs.Controllers
         [HttpPut("Address")]
         public async Task<ActionResult<AddressDto>> UpdateAddress(AddressDto updatedAddress)
         {
-            //var email = User.FindFirstValue(ClaimTypes.Email);
-            //var user = await _userManager.FindByEmailAsync(email);
-            //var MappedAddress = _mapper.Map<AddressDto , Address>(updatedAddress);
-            //user.Address = MappedAddress;
 
             var user = await _userManager.FindUserAddressAsync(User);
             var MappedAddress = _mapper.Map<AddressDto , Address>(updatedAddress);
@@ -120,6 +122,13 @@ namespace talabat.APIs.Controllers
             return Ok(MappedAddress);
 
 
+        }
+
+
+        [HttpGet("EmailExisted")]
+        public async Task<ActionResult<bool>> CheckEmailExist(string Email)
+        {
+           return await _userManager.FindByEmailAsync(Email) is not null;
         }
     }
 
