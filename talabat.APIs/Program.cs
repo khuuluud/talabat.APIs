@@ -69,18 +69,16 @@ namespace talabat.APIs
            using var Scope = app.Services.CreateScope();
 
             var Services = Scope.ServiceProvider;
-
             var LoggerFactory = Services.GetRequiredService<ILoggerFactory>();
+            var dbContext = Services.GetRequiredService<StoredContext>();
+            var IdentityDbContext = Services.GetRequiredService<AppIdentityDbContext>();
+            var UserManager = Services.GetRequiredService<UserManager<AppUser>>();
 
             try
             {
-                var dbContext = Services.GetRequiredService<StoredContext>();
 
                 await dbContext.Database.MigrateAsync();
-
-                var IdentityDbContext = Services.GetRequiredService<AppIdentityDbContext>();
                 await IdentityDbContext.Database.MigrateAsync();
-                var UserManager = Services.GetRequiredService<UserManager<AppUser>>();
                 await AppidentityDbContextSeed.SeedUserAsync(UserManager);
                 await StoreContextSeed.SeedAsync(dbContext);
             }

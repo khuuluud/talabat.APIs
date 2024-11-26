@@ -8,6 +8,18 @@ namespace Talabat.Core.Entities.Order_aggregate
 {
     public class ProductItemOrder
     {
+        public ProductItemOrder(int productId, string productName, string pictureUrl)
+        {
+            ProductId = productId;
+            this.productName = productName;
+            PictureUrl = pictureUrl;
+        }
+
+        public ProductItemOrder()
+        {
+            
+        }
+
         public int ProductId { get; set; }
         public string productName { get; set; }
         public string PictureUrl { get; set; }

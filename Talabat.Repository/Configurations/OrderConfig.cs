@@ -21,7 +21,9 @@ namespace Talabat.Repository.Configurations
 
             builder.OwnsOne( O => O.ShippingAddress , A => A.WithOwner());
 
-
+            builder.HasOne(O => O.DeliveryMethod)
+                   .WithMany()
+                   .OnDelete(DeleteBehavior.NoAction);
 
         }
     }
