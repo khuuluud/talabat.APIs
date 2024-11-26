@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Talabat.Core.Entities.Order_aggregate
 {
-    internal class Order : BaseEntity
+    public class Order : BaseEntity
     {
         public string BuyerEmail { get; set; }
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
