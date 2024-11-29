@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using talabat.APIs.Errors;
 using talabat.APIs.Helpers;
+using Talabat.Core;
 using Talabat.Core.Repository;
 using Talabat.Repository;
 
@@ -35,7 +36,7 @@ namespace talabat.APIs.Extenstions
                     return new BadRequestObjectResult(ValidationErrorResponse);
                 };
             });
-
+            Services.AddScoped<IUnitOfWork, UnitOfwork>();
             return Services;
         }
     }
