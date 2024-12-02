@@ -3,7 +3,9 @@ using talabat.APIs.Errors;
 using talabat.APIs.Helpers;
 using Talabat.Core;
 using Talabat.Core.Repository;
+using Talabat.Core.Services;
 using Talabat.Repository;
+using Talabat.Services;
 
 namespace talabat.APIs.Extenstions
 {
@@ -37,6 +39,7 @@ namespace talabat.APIs.Extenstions
                 };
             });
             Services.AddScoped<IUnitOfWork, UnitOfwork>();
+            Services.AddScoped<IOrderService, OrderService>();
             return Services;
         }
     }
