@@ -13,7 +13,7 @@ namespace Talabat.Core.Services
 
         Task<IReadOnlyList<Order>> GetOrderForSpecificUserAsync(string BuyerEmail);
 
-        Task<Order> GetOrderForSpecificUserAsync(string BuyerEmail , int OrderId);
+        Task<Order?> GetOrderForSpecificUserAsync(string BuyerEmail , int OrderId);
 
     }
 }
