@@ -20,7 +20,7 @@ namespace talabat.APIs.Controllers
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
 
-        public OrderController(IOrderService orderService , IMapper mapper)
+        public OrderController(IOrderService orderService, IMapper mapper)
         {
             _orderService = orderService;
             _mapper = mapper;
@@ -36,9 +36,9 @@ namespace talabat.APIs.Controllers
             var MappedAddress = _mapper.Map<AddressDto, Address>(orderDto.ShippingAddress);
 
 
-           var Order = await _orderService.CreateOrderAsync(BuyerEmail , orderDto.BasketId , orderDto.DeliveryMethodId , MappedAddress);
+            var Order = await _orderService.CreateOrderAsync(BuyerEmail, orderDto.BasketId, orderDto.DeliveryMethodId, MappedAddress);
 
-            if (Order is null) return BadRequest(new ApiResponse(400 , "There is an error with the order"));
+            if (Order is null) return BadRequest(new ApiResponse(400, "There is an error with the order"));
 
             return Ok(Order);
         }
@@ -53,14 +53,24 @@ namespace talabat.APIs.Controllers
         {
             var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
             var orders = await _orderService.GetOrderForSpecificUserAsync(BuyerEmail);
-            if (orders is null) return NotFound( new ApiResponse(400 , "There is no orders for this user"));
+            if (orders is null) return NotFound(new ApiResponse(400, "There is no orders for this user"));
             return Ok(orders);
-
-
-
 
         }
 
+        [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IReadOnlyList<Order>), StatusCodes.Status404NotFound)]
+        [Authorize]
+        [HttpGet("{id}")]
+      
+        public async Task<ActionResult<Order>> GetuserOrderById(int id)
+        {
+            var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
+          var order =  await _orderService.GetOrderForSpecificUserAsync(BuyerEmail , id);
 
+            if (order is null) return NotFound(new ApiResponse(400, $"There is no order with {id} for this user"));
+            return Ok(order); 
+
+        }
     }
 }

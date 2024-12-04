@@ -22,6 +22,8 @@ namespace Talabat.Core.Entities.Order_aggregate
             SubTotal = subTotal;
         }
 
+
+
         public string BuyerEmail { get; set; }
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
@@ -31,7 +33,6 @@ namespace Talabat.Core.Entities.Order_aggregate
         public decimal SubTotal { get; set; }
         [NotMapped]
         public string  PaymentIntentId { get; set; } = string.Empty;
-
         public decimal GetTotal()
         => SubTotal + DeliveryMethod.Cost;
         
