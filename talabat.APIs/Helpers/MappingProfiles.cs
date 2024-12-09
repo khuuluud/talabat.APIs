@@ -21,6 +21,16 @@ namespace talabat.APIs.Helpers
             CreateMap<BasketItemDto, BasketItem>();
             CreateMap<AddressDto , Talabat.Core.Entities.Order_aggregate.Address>();
 
+            CreateMap<Order, OrderToReturnDto>()
+                .ForMember(D => D.DeliveryMethod , O => O.MapFrom(S => S.DeliveryMethod.ShortName))
+                .ForMember(D => D.DeliveryMethodCost , O => O.MapFrom(S => S.DeliveryMethod.Cost));
+
+
+            CreateMap<OrderItem, OrderItemDto>()
+                .ForMember(d => d.ProductId , o => o.MapFrom(s => s.Product.ProductId))
+                .ForMember(d => d.productName , o => o.MapFrom(s => s.Product.productName))
+                .ForMember(d => d.PictureUrl , o => o.MapFrom(s => s.Product.PictureUrl))
+                .ForMember(d => d.PictureUrl , o => o.MapFrom<OrderItemPicUrlResolver>());
         }
 
     }
