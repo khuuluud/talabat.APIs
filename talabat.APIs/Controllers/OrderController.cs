@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using talabat.APIs.Dtos;
 using talabat.APIs.Errors;
+using Talabat.Core;
 using Talabat.Core.Entities.Order_aggregate;
 using Talabat.Core.Services;
 using Talabat.Services;
@@ -19,11 +20,13 @@ namespace talabat.APIs.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public OrderController(IOrderService orderService, IMapper mapper)
+        public OrderController(IOrderService orderService, IMapper mapper , IUnitOfWork unitOfWork)
         {
             _orderService = orderService;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
@@ -77,6 +80,12 @@ namespace talabat.APIs.Controllers
 
         }
 
+        [HttpGet("DeliveryMethods")]
 
+        public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
+        {
+            var DeliveryMethods = await _unitOfWork.Repository<DeliveryMethod>().GetAllAsync();
+            return Ok(DeliveryMethods);
+        }
     }
 }
