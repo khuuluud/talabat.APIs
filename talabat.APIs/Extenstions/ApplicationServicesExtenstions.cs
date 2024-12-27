@@ -40,6 +40,7 @@ namespace talabat.APIs.Extenstions
             });
             Services.AddScoped<IUnitOfWork, UnitOfwork>();
             Services.AddScoped<IOrderService, OrderService>();
+            Services.AddScoped<IPaymentService, PaymentService>();
             return Services;
         }
     }
