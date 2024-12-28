@@ -57,7 +57,15 @@ namespace talabat.APIs
             builder.Services.AddApplicationServices();
 
             builder.Services.AddIdentityService(builder.Configuration);
-
+            builder.Services.AddCors(Options =>
+            {
+                Options.AddPolicy("MyPolicy", options =>
+                {
+                    options.AllowAnyHeader();
+                    options.AllowAnyMethod();
+                    options.WithOrigins(builder.Configuration["FrontBaseUrl"]);
+                });
+            });
            
 
             #endregion
@@ -104,6 +112,7 @@ namespace talabat.APIs
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("MyPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 
