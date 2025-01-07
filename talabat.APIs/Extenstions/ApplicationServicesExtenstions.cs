@@ -14,6 +14,7 @@ namespace talabat.APIs.Extenstions
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection Services)
         {
+            Services.AddSingleton<IResponseCacheService , ResponseCacheService>();
             Services.AddScoped(typeof( IBasketRepository), typeof( BasketRepository));
 
             Services.AddScoped(typeof(iGenericRepository<>), typeof(GenericRepository<>));
@@ -41,6 +42,7 @@ namespace talabat.APIs.Extenstions
             Services.AddScoped<IUnitOfWork, UnitOfwork>();
             Services.AddScoped<IOrderService, OrderService>();
             Services.AddScoped<IPaymentService, PaymentService>();
+           
             return Services;
         }
     }
